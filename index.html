@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор генеалогического дерева</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Конструктор генеалогического дерева</h1>
+            <nav>
+                <ul>
+                    <li><a href="#create-tree">Создать дерево</a></li>
+                    <li><a href="#view-tree">Посмотреть дерево</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section id="create-tree">
+        <h2>Создать дерево</h2>
+        <form id="tree-form">
+            <label for="hierarchy">Иерархия (используйте символ '-' для обозначения степени родства и символ '=' для обозначения супругов):</label>
+            <textarea id="hierarchy" rows="10" cols="30">дед
+-отец
+-=жена
+--ребенок1
+--ребенок2
+-брат отца</textarea>
+            <button type="submit">Создать дерево</button>
+        </form>
+        <button onclick="exportToFile()">Экспортировать</button>
+        <div class="row">
+            <button id="import-button">Импортировать</button>
+            <input type="file" id="import-file">
+        </div>
+    </section>
+
+    <section id="view-tree">
+        <h2>Посмотреть дерево</h2>
+        <div id="graph-container"></div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
+</body>
+</html>
