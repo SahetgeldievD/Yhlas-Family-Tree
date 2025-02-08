@@ -27,10 +27,14 @@
 -отец
 -=жена
 --ребенок1
---ребенок2</textarea>
+--ребенок2
+-брат отца
+-=жена брата отца
+--дочь брата отца
+---внучка брата отца</textarea>
             <button type="submit">Создать дерево</button>
         </form>
-        <button>Экспортировать</button>
+        <button onclick="exportToFile()">Экспортировать</button>
         <div class="row">
             <button id="import-button">Импортировать</button>
             <input type="file" id="import-file">

@@ -1,5 +1,26 @@
 let familyTree = [];
 
+function exportToFile() {
+    const hierarchyText = document.getElementById('hierarchy').value;
+    const blob = new Blob([hierarchyText], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'hierarchy.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+const importButton = document.getElementById('import-button');
+const importFile = document.getElementById('import-file');
+
+importButton.addEventListener('click', function() {
+    if (importFile.files.length === 0) {
+        return;
+    }
+    importFromFile(importFile.files[0]);
+});
+
 function importFromFile(file) {
     const reader = new FileReader();
     reader.onload = function(event) {
@@ -34,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let rootNode = null;
 
         lines.forEach(line => {
-            const level = line.match(/[-=]/g)?.length || 0;
+            const level = line.match(/[-=]/g)?.length || 0; // Определяем уровень по количеству символов '-' или '='
             const type = line.includes('=') ? 'spouse' : 'child';
             const name = line.replace(/[-=]/g, '').trim();
             const node = { name, type, parent: null, children: [], spouse: null };
@@ -56,6 +77,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         return Object.values(nodes);
+    }
+
+    function exportToJson() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(familyTree));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "familyTree.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
+    function importFromJson(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            familyTree = JSON.parse(event.target.result);
+            renderGraph();
+        };
+        reader.readAsText(file);
     }
 
     function renderGraph() {
@@ -187,5 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             return links;
         }
+
+        
     }
 });
